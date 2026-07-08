@@ -1,12 +1,24 @@
-.venv/
+# macOS
+.DS_Store
+
+# Python
 __pycache__/
-*.pyc
-.matplotlib-cache/
+*.py[cod]
+
+.venv/
+.env
+
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+results/*-test/
+
+# LaTeX build artifacts (il PDF viene comunque versionato)
 *.aux
 *.log
 *.out
 *.toc
-.DS_Store
 *.synctex.gz
-.DS_Store
-.claude/
+*.fls
+*.fdb_latexmk
