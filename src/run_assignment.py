@@ -48,6 +48,9 @@ def main() -> None:
     print(f"Benchmark scritto in: {benchmark_csv}")
     print(f"Grafico benchmark scritto in: {plot_path}")
 
+    if args.checkerboards:
+        run_checkerboards(base_dir, output_dir)
+
     if args.examples:
         image_paths = resolve_images(args.image, base_dir)
         example_dir = output_dir / "examples"
@@ -128,7 +131,8 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--output", type=Path, default=Path("results"), help="Cartella output. Default: results.")
     parser.add_argument("--no-examples", dest="examples", action="store_false", help="Esegue solo il benchmark.")
-    parser.set_defaults(examples=True)
+    parser.add_argument("--no-checkerboards", dest="checkerboards", action="store_false", help="Disabilita il test sulle scacchiere con F=10.")
+    parser.set_defaults(examples=True, checkerboards=True)
     return parser.parse_args()
 
 
@@ -148,6 +152,71 @@ def run_benchmark(sizes: Sequence[int], repeats: int) -> list[dict[str, str]]:
         )
         print(f"N={size:4d} homemade={homemade_time:.6f}s fast={fast_time:.6f}s")
     return rows
+
+
+def run_checkerboards(base_dir: Path, output_dir: Path) -> None:
+    img_dir = base_dir / "immagini"
+    checkerboard_files = [
+        "20x20.bmp",
+        "40x40.bmp",
+        "80x80.bmp",
+        "160x160.bmp",
+        "320x320.bmp",
+        "640x640.bmp",
+    ]
+    image_paths = [img_dir / f for f in checkerboard_files if (img_dir / f).exists()]
+    
+    if not image_paths:
+        return
+        
+    scac_dir = output_dir / "scacchiere_F10"
+    scac_dir.mkdir(parents=True, exist_ok=True)
+    
+    f = 10
+    d_values = [4, 10, 16]
+    
+    for image_path in image_paths:
+        print(f"\nElaborazione scacchiera (F=10): {image_path.name}")
+        original = load_bmp_grayscale(image_path)
+        
+        compressions = []
+        metrics = []
+        
+        for d in d_values:
+            if f > original.shape[0] or f > original.shape[1]:
+                print(f"  Salto F={f}, d={d}: blocco più grande dell'immagine {original.shape}")
+                continue
+
+            cropped_original, compressed = compress_image_array(
+                original,
+                block_size=f,
+                cutoff=d,
+            )
+            
+            mse, psnr = calculate_metrics(cropped_original, compressed)
+            comp_ratio = calculate_compression_ratio(f, d)
+            
+            compressions.append((f, d, compressed, psnr))
+            metrics.append({
+                "F": f,
+                "d": d,
+                "mse": float(mse),
+                "psnr": float(psnr),
+                "compression_ratio": float(comp_ratio)
+            })
+            
+        if not compressions:
+            print(f"Nessuna compressione valida per {image_path.name}.")
+            continue
+
+        grid_path = scac_dir / f"{image_path.stem}_grid.png"
+        csv_path = scac_dir / f"{image_path.stem}_metrics.csv"
+        
+        save_compression_grid(compressions, grid_path, image_path.name)
+        write_image_metrics_csv(metrics, csv_path)
+        
+        print(f"Grid salvata in: {grid_path}")
+        print(f"CSV salvato in: {csv_path}")
 
 
 def write_benchmark_csv(rows: list[dict[str, str]], path: Path) -> None:

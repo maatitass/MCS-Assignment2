@@ -50,11 +50,13 @@ Si possono indicare piu' dimensioni o immagini ripetendo gli argomenti:
 python src/run_assignment.py --size 16 --size 32 --image immagini/320x320.bmp
 ```
 
-Per eseguire solo il benchmark saltando le immagini:
+Per eseguire solo il benchmark saltando sia le immagini standard che i test mirati sulle scacchiere:
 
 ```bash
-python src/run_assignment.py --no-examples
+python src/run_assignment.py --no-examples --no-checkerboards
 ```
+
+La routine delle scacchiere genera in `results/scacchiere_F10/` dei test specifici con $F=10$ e metriche CSV (senza grafici) pensati per mostrare il caso di compressione perfetta.
 
 ## Interfaccia grafica (GUI)
 

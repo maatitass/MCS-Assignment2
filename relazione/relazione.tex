@@ -603,6 +603,29 @@ scacchiera si riallineano ogni 40 pixel. Per questo
 motivo, tutte le scacchiere con lato multiplo di 40 contengono la stessa
 configurazione di blocchi e danno risultati identici.
 
+Un caso particolare e limite si osserva impostando la dimensione del blocco $F=10$. Essendo le celle della scacchiera esattamente di $10 \times 10$ pixel, questa scelta garantisce un allineamento spaziale perfetto tra la partizione a blocchi dell'algoritmo e la struttura dell'immagine. In questa specifica configurazione ogni blocco ricade interamente all'interno di una singola cella, contenendo pixel di intensità uniforme. L'intera energia spaziale si concentra così nella sola componente continua della DCT, permettendo all'algoritmo di raggiungere una compressione perfetta a prescindere dal parametro $d$, a patto di mantenerlo strettamente positivo.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/20x20_grid_F10.png}
+\caption{Scacchiera $20\times20$: compressione con $F=10$.}
+\label{fig:scac20-grid-f10}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/160x160_grid_F10.png}
+\caption{Scacchiera $160\times160$: compressione con $F=10$.}
+\label{fig:scac160-grid-f10}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/640x640_grid_F10.png}
+\caption{Scacchiera $640\times640$: compressione con $F=10$.}
+\label{fig:scac640-grid-f10}
+\end{figure}
+
 \subsection{Fotografie reali}
 
 Le cinque fotografie analizzate (\texttt{bridge}, \texttt{cathedral},
@@ -708,8 +731,8 @@ tonypitony  & 26.0\,\scriptsize(4.7\,\%) & 32.5\,\scriptsize(23.4\,\%) & 40.3\,\
 \end{table}
 
 I risultati confermano queste premesse. Conservando appena il
-$5\%$ dei coefficienti, con $d=2$, tutte le fotografie superano i
-$28$~dB, con una ricostruzione visivamente fedele all'originale.
+$5\%$ dei coefficienti, con $d=2$, quasi tutte le fotografie superano i
+$26$~dB (a parte scarpa), con una ricostruzione abbastanza visivamente fedele all'originale.
 Il divario rispetto alla scacchiera è netto: a parità di soglia, la
 scacchiera non raggiungeva i $10$~dB.
 Portando la soglia a $d=5$, cioè mantenendo meno di
@@ -724,7 +747,7 @@ rapidamente al crescere di $d$. Questo accade perché
 i loro dettagli producono alte frequenze \emph{sparse}, generate da
 contorni isolati, e non dense come nel caso della scacchiera. Infine,
 a parità di frazione di coefficienti mantenuti,
-i blocchi più ampi ($F=32$) danno risultati migliori dei blocchi
+i blocchi più ampi ($F=32$) danno risultati leggermente migliori dei blocchi
 piccoli ($F=8$) in presenza di strutture estese: un blocco più
 grande cattura dipendenze spaziali più ampie e
 converge più rapidamente verso la ricostruzione esatta.
@@ -765,9 +788,7 @@ in mezzo, e i nostri esperimenti ne mostrano il motivo.
 Il codice è documentato in modo sistematico: ogni modulo ha una \emph{docstring}
 di intestazione che ne descrive lo scopo, e ogni funzione pubblica ha una
 \emph{docstring} che ne specifica comportamento, argomenti (con tipo atteso),
-valore di ritorno ed eccezioni sollevate. Le convenzioni seguono lo stile
-\texttt{numpy}/PEP~257, con annotazioni di tipo (\emph{type hints}) sulle
-firme. Di seguito si riporta la documentazione funzione per funzione.
+valore di ritorno ed eccezioni sollevate.Di seguito si riporta la documentazione funzione per funzione.
 
 \subsection{Modulo \texttt{dct\_utils.py}}
 
@@ -867,9 +888,17 @@ Misura il tempo di esecuzione di una funzione restituendo il \emph{minimo} su
 
 \paragraph{\texttt{main()}.}
 Parsa gli argomenti da riga di comando, esegue il benchmark dei tempi (con
-\texttt{--size} ripetibile, \texttt{--repeats}) e, salvo \texttt{--no-examples},
-genera per ogni immagine una griglia di compressioni, un grafico di metriche e
+\texttt{--size} ripetibile, \texttt{--repeats}), esegue i test specifici per le scacchiere
+(disattivabile con \texttt{--no-checkerboards}) e, salvo \texttt{--no-examples},
+genera per ogni immagine standard una griglia di compressioni, un grafico di metriche e
 un CSV in \texttt{results/examples/}.
+
+\paragraph{\texttt{run\_checkerboards(base\_dir, output\_dir)}.}
+Genera un'esecuzione dedicata esclusivamente alle immagini delle scacchiere a varia
+risoluzione. Impostando $F=10$ (dimensione fissa del blocco che combacia esattamente con
+le celle dell'immagine originale) e ciclando su 3 valori specifici di $d$,
+salva le griglie di ricostruzione visiva e le statistiche nei file CSV, ma senza produrre
+i plot delle metriche, all'interno della cartella \texttt{results/scacchiere\_F10/}.
 
 \paragraph{\texttt{run\_benchmark(sizes, repeats)}.}
 Ciclo di misura: per ogni $N$ genera una matrice casuale $N\times N$ (seed

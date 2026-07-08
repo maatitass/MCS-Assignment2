@@ -33,6 +33,24 @@
     \titlepage
 \end{frame}
 
+\begin{frame}{Introduzione al Progetto}
+    L'obiettivo è studiare e applicare la Trasformata Discreta del Coseno (DCT) per la compressione di immagini in toni di grigio. Il lavoro si divide in due fasi:
+    \begin{itemize}
+        \item Implementazione della DCT bidimensionale: scrittura di una versione basata sul prodotto matriciale e confronto con l'implementazione \emph{fast} di libreria.
+        \item Sviluppo di un software con interfaccia grafica per applicare la compressione a blocchi su immagini reali e sintetiche.
+        \item Analisi del compromesso tra compressione e qualità al variare della dimensione dei blocchi ($F$) e della soglia di taglio delle alte frequenze ($d$).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{La Trasformata Discreta del Coseno (DCT)}
+    La DCT nasce dalla teoria delle serie di Fourier per approssimare un segnale campionato riducendo il fenomeno di Gibbs ai bordi.
+    \begin{itemize}
+        \item Il segnale viene riflesso per renderlo pari, per poi periodizzarlo: si eliminano così le discontinuità e si azzerano i coefficienti associati ai seni, lasciando una base di soli coseni ortogonali.
+        \item Compattazione dell'energia: più l'immagine è liscia, più i coefficienti della trasformata decadono rapidamente all'aumentare delle frequenze.
+        \item La DCT concentra quasi tutta l'energia a bassa frequenza, permettendo di azzerare quelle alte con un degrado visivo minimo.
+    \end{itemize}
+\end{frame}
+
 \begin{frame}{DCT2: Implementazione Custom}
     Abbiamo sfruttato la \emph{separabilità} del nucleo coseno.
     \begin{itemize}
@@ -253,6 +271,35 @@
     \begin{figure}
         \centering
         \includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{../relazione/figures/640x640_metrics.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Scacchiera: Il caso limite F=10}
+    \begin{itemize}
+        \item Impostando la dimensione del blocco a $F=10$, si ottiene un allineamento spaziale perfetto con le celle $10 \times 10$ dell'immagine.
+        \item Ogni blocco ricade interamente all'interno di una singola cella, presentando così pixel di intensità del tutto uniforme.
+        \item L'energia spaziale si concentra unicamente nella componente continua, permettendo una compressione perfetta al minimo della soglia.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Scacchiera 20x20: Compressione con F=10}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{../relazione/figures/20x20_grid_F10.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Scacchiera 160x160: Compressione con F=10}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{../relazione/figures/160x160_grid_F10.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Scacchiera 640x640: Compressione con F=10}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{../relazione/figures/640x640_grid_F10.png}
     \end{figure}
 \end{frame}
 
