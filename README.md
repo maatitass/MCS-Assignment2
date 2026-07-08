@@ -1,107 +1,75 @@
-# Assignment 2 - Compressione immagini tramite DCT
+# Progetto 2 - Metodi del Calcolo Scientifico
 
-Progetto Python semplice per il secondo assignment di Metodi del Calcolo
-Scientifico. Il codice implementa:
+**Autori:**
+- Matias Bonoli (matricola 912941)
+- Ashley Chudory (matricola 935003)
+- Daniele Maccagnan (matricola 945269)
 
-- DCT2 fatta in casa con matrice ortonormale esplicita, come nei file MATLAB del professore;
-- DCT2 fast tramite `scipy.fft`;
-- compressione di immagini BMP in scala di grigi tramite taglio delle frequenze;
-- GUI minimale per scegliere immagine, `F` e `d`.
+Compressione di immagini in scala di grigio con DCT.
 
-La relazione si trova in `relazione/relazione.pdf`; questo README e' operativo.
+Implementazione Python di quanto richiesto dal progetto:
+
+- DCT2 fatta in casa
+- DCT2 fast tramite `scipy.fft`
+- Compressione di immagini tramite taglio delle frequenze
+- GUI minimale
 
 ## Dipendenze
 
-Usare un ambiente locale, senza installazioni globali:
-
 ```bash
-uv venv
-uv pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
-## Test
+## Esecuzione completa
+
+Dalla cartella del progetto:
 
 ```bash
-uv run python src/test_assignment.py
+python src/run_assignment.py
 ```
 
-I test controllano i due blocchi numerici del PDF, il confronto tra DCT2 fatta
-in casa e DCT2 fast, la IDCT2, la maschera `k + ell >= d` e la compressione di
-una piccola immagine.
+Questo comando esegue i benchmark su varie dimensioni di matrici (da 8 a 1024) e 
+applica la compressione su tutte le immagini `.bmp` presenti nella cartella `immagini`
+per diverse combinazioni di blocchi `F` e soglie di taglio `d`.
 
-## Benchmark ed esempi
-
-```bash
-uv run python src/run_assignment.py
-```
-
-Output principali:
+Gli output vengono salvati in:
 
 - `results/benchmark.csv`
 - `results/benchmark_dct2.png`
-- `results/examples/*_grid.png`
-- `results/examples/*_metrics_plot.png`
-- `results/examples/*_metrics.csv`
+- `results/examples/` (griglie, metriche in csv e grafici)
 
-Il benchmark standard usa:
-
-```text
-N = 8, 16, 32, 64, 128, 256, 512, 768, 1024
-```
-
-Per usare dimensioni specifiche nel benchmark:
+## Esecuzione su parametri specifici
 
 ```bash
-uv run python src/run_assignment.py --size 16 --size 32 --size 64
+python src/run_assignment.py --size 32
 ```
 
-Per generare gli esempi solo per una immagine specifica:
+Si possono indicare piu' dimensioni o immagini ripetendo gli argomenti:
 
 ```bash
-uv run python src/run_assignment.py --image immagini/320x320.bmp
+python src/run_assignment.py --size 16 --size 32 --image immagini/320x320.bmp
 ```
 
-Per ogni immagine vengono provate 12 coppie `(F, d)` fisse: quattro con
-`F = 8`, quattro con `F = 16` e quattro con `F = 32`.
-
-Il parametro `F` e' la dimensione dei blocchi quadrati. Il parametro `d` deve
-rispettare:
-
-```text
-0 <= d <= 2F - 2
-```
-
-I coefficienti eliminati sono quelli con indice `k + ell >= d`, usando indici
-che partono da zero.
-
-## GUI
+Per eseguire solo il benchmark saltando le immagini:
 
 ```bash
-uv run python src/gui.py
+python src/run_assignment.py --no-examples
 ```
 
-La GUI permette di scegliere un file `.bmp`, inserire `F` e `d`, e vedere
-subito l'immagine originale selezionata con la sua dimensione. Dopo aver
-premuto `Comprimi`, mostra affiancate l'immagine originale intera e quella
-ricostruita sui blocchi completi usati dalla DCT2. Le due anteprime vengono
-ridimensionate dentro la finestra senza tagliare l'immagine.
+## Interfaccia grafica (GUI)
 
-Sotto le caselle `F` e `d` la GUI mostra anche i valori ammessi:
+```bash
+python src/gui.py
+```
 
-- sotto `F`, dato `d`, indica il minimo `F` necessario;
-- sotto `d`, dato `F`, indica il range valido per `d`;
-- se un'immagine e' selezionata, indica anche il massimo `F` possibile per
-  avere almeno un blocco completo.
+La GUI permette di selezionare visivamente un'immagine, scegliere i parametri `F` e `d`,
+e visualizzare in tempo reale l'originale a confronto con l'immagine compressa.
 
-Se `F` non divide esattamente larghezza o altezza, il risultato compresso usa
-solo la parte dell'immagine coperta da blocchi completi, come richiesto dal
-testo del progetto. La GUI lascia comunque visibile l'immagine originale intera
-a sinistra e indica in basso la dimensione effettivamente usata per la DCT2.
+## Test veloci
 
-## Struttura
+```bash
+python src/test_assignment.py
+```
 
-- `src/dct_utils.py`: funzioni DCT, IDCT, maschera frequenze e compressione;
-- `src/run_assignment.py`: benchmark DCT2 e generazione esempi;
-- `src/gui.py`: interfaccia Tkinter minimale;
-- `src/test_assignment.py`: test veloci senza framework esterni;
-- `immagini/`: immagini BMP fornite dal docente.
+I test controllano i due blocchi numerici del PDF fornito, la coerenza tra DCT2 fatta
+in casa e DCT2 fast, l'inversa IDCT2 e la corretta applicazione della maschera di taglio.
