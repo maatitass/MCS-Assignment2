@@ -1,4 +1,0 @@
-F,d,mse,psnr,compression_ratio
-10,4,0.0,inf,0.1
-10,10,0.0,inf,0.55
-10,16,0.0,inf,0.94

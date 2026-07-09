@@ -603,27 +603,29 @@ scacchiera si riallineano ogni 40 pixel. Per questo
 motivo, tutte le scacchiere con lato multiplo di 40 contengono la stessa
 configurazione di blocchi e danno risultati identici.
 
-Un caso particolare e limite si osserva impostando la dimensione del blocco $F=10$. Essendo le celle della scacchiera esattamente di $10 \times 10$ pixel, questa scelta garantisce un allineamento spaziale perfetto tra la partizione a blocchi dell'algoritmo e la struttura dell'immagine. In questa specifica configurazione ogni blocco ricade interamente all'interno di una singola cella, contenendo pixel di intensità uniforme. L'intera energia spaziale si concentra così nella sola componente continua della DCT, permettendo all'algoritmo di raggiungere una compressione perfetta a prescindere dal parametro $d$, a patto di mantenerlo strettamente positivo.
+Un caso particolare e limite si osserva impostando la dimensione del blocco $F=10$. Essendo le celle della scacchiera esattamente di $10 \times 10$ pixel, questa scelta garantisce un allineamento spaziale perfetto tra la partizione a blocchi dell'algoritmo e la struttura dell'immagine. In questa specifica configurazione ogni blocco ricade interamente all'interno di una singola cella, contenendo pixel di intensità uniforme. L'intera energia spaziale si concentra così nella sola componente continua della DCT, permettendo all'algoritmo di raggiungere una compressione perfetta a prescindere dal parametro $d$, a patto di mantenerlo strettamente positivo (come mostrato nei test seguenti con $d=1$).
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.95\textwidth]{figures/20x20_grid_F10.png}
-\caption{Scacchiera $20\times20$: compressione con $F=10$.}
-\label{fig:scac20-grid-f10}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.95\textwidth]{figures/160x160_grid_F10.png}
-\caption{Scacchiera $160\times160$: compressione con $F=10$.}
-\label{fig:scac160-grid-f10}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.95\textwidth]{figures/640x640_grid_F10.png}
-\caption{Scacchiera $640\times640$: compressione con $F=10$.}
-\label{fig:scac640-grid-f10}
+\begin{subfigure}{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/20x20_grid_F10.png}
+    \caption{$20\times20$}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/160x160_grid_F10.png}
+    \caption{$160\times160$}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/640x640_grid_F10.png}
+    \caption{$640\times640$}
+\end{subfigure}
+\caption{Compressione perfetta della scacchiera con $F=10$ ($d=1$).}
+\label{fig:scacchiere-f10}
 \end{figure}
 
 \subsection{Fotografie reali}

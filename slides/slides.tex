@@ -278,28 +278,36 @@
     \begin{itemize}
         \item Impostando la dimensione del blocco a $F=10$, si ottiene un allineamento spaziale perfetto con le celle $10 \times 10$ dell'immagine.
         \item Ogni blocco ricade interamente all'interno di una singola cella, presentando così pixel di intensità del tutto uniforme.
-        \item L'energia spaziale si concentra unicamente nella componente continua, permettendo una compressione perfetta al minimo della soglia.
+        \item L'energia spaziale si concentra unicamente nella componente continua, permettendo una compressione perfetta al minimo della soglia ($d=1$).
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Scacchiera 20x20: Compressione con F=10}
+\begin{frame}{Scacchiera: Compressione perfetta con F=10 ($d=1$)}
     \begin{figure}
         \centering
-        \includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{../relazione/figures/20x20_grid_F10.png}
-    \end{figure}
-\end{frame}
-
-\begin{frame}{Scacchiera 160x160: Compressione con F=10}
-    \begin{figure}
-        \centering
-        \includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{../relazione/figures/160x160_grid_F10.png}
-    \end{figure}
-\end{frame}
-
-\begin{frame}{Scacchiera 640x640: Compressione con F=10}
-    \begin{figure}
-        \centering
-        \includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{../relazione/figures/640x640_grid_F10.png}
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{../relazione/figures/20x20_grid_F10.png}
+            
+            \vspace{2mm}
+            \scriptsize $20\times20$
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{../relazione/figures/160x160_grid_F10.png}
+            
+            \vspace{2mm}
+            \scriptsize $160\times160$
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{../relazione/figures/640x640_grid_F10.png}
+            
+            \vspace{2mm}
+            \scriptsize $640\times640$
+        \end{minipage}
     \end{figure}
 \end{frame}
 

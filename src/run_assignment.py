@@ -173,7 +173,7 @@ def run_checkerboards(base_dir: Path, output_dir: Path) -> None:
     scac_dir.mkdir(parents=True, exist_ok=True)
     
     f = 10
-    d_values = [4, 10, 16]
+    d_values = [1]
     
     for image_path in image_paths:
         print(f"\nElaborazione scacchiera (F=10): {image_path.name}")
@@ -209,8 +209,8 @@ def run_checkerboards(base_dir: Path, output_dir: Path) -> None:
             print(f"Nessuna compressione valida per {image_path.name}.")
             continue
 
-        grid_path = scac_dir / f"{image_path.stem}_grid.png"
-        csv_path = scac_dir / f"{image_path.stem}_metrics.csv"
+        grid_path = scac_dir / f"{image_path.stem}_grid_F10.png"
+        csv_path = scac_dir / f"{image_path.stem}_metrics_F10.csv"
         
         save_compression_grid(compressions, grid_path, image_path.name)
         write_image_metrics_csv(metrics, csv_path)
